@@ -11,10 +11,11 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from POE import load_chat_id_map, clear_context, send_message, get_latest_message, set_auth
+from keys import Keys
 
 #Auth
-set_auth('Quora-Formkey','f72407929b50a310a71f0bfab73594cc')
-set_auth('Cookie','m-b=fo4BP-aQf5SXPYGN7sDb3A==')
+set_auth('Quora-Formkey', Keys.QOURA_FORMKEY)
+set_auth('Cookie', Keys.COOKIE)
 
 bots = {1:'capybara', 2:'beaver', 3:'a2_2', 4:'a2', 5:'chinchilla', 6:'nutria'}
 bot = bots[int(1)]
@@ -28,11 +29,18 @@ print("Context is now cleared")
 
 def query_formatter(docs, query):
     """formate the queries"""
-    return f""" Use only below 'Context' and find the answer to the 'Question'. '
+    # return f""" Use only below 'Context' and find the answer to the 'Question'. '
+    # Be precise and to the point while answering. format your answers in markdown where necessary.
+    # 'Context: {docs}'
+    # 'Question: {query}'"""
+    return f""" Use the below 'Context' and answer to the 'Question'. '
     Be precise and to the point while answering. format your answers in markdown where necessary.
     'Context: {docs}'
     'Question: {query}'"""
 
+
+st.set_page_config(page_title="Chat with PDF", page_icon=":books:", 
+                   layout="wide", initial_sidebar_state="collapsed")
 
 # Sidebar contents
 with st.sidebar:
