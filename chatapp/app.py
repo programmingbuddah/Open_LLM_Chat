@@ -2,6 +2,11 @@ import streamlit as st
 from PyPDF2 import PdfReader
 from streamlit_extras.add_vertical_space import add_vertical_space
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.vectorstores import FAISS
+import pickle
+
+
 
 # Sidebar contents
 with st.sidebar:
@@ -37,6 +42,21 @@ def main():
             )
 
             chunks = text_splitter.split_text(text=text)
+
+
+            embedding = HuggingFaceEmbeddings(
+                model_name = "sentence-transformers/all-mpnet-base-v2",
+                model_kwargs = {'device': 'cpu'},
+                encode_kwargs = {'normalize_embeddings': False}
+            )
+
+            store = FAISS.from_texts(chunks, embedding=embedding)
+            store_name = pdf.name[:-4]
+            with open(f"{store_name}.pkl", "wb") as f:
+                pickle.dump(store, f)
+
+
+
 
             st.write(chunks)
 
