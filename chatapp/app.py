@@ -57,6 +57,14 @@ with st.sidebar:
     st.write('Made with ❤️ by https://github.com/programmingbuddah')
 
 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 def main():
     st.header("Chat with PDF")
     pdf = st.file_uploader("Upload your PDF", type='pdf')
